@@ -3,352 +3,321 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pixel Hub Portfolio</title>
+    <title>Muntasim's Portfolio</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5dc; /* Creamy color */
-            color: #333;
             margin: 0;
             padding: 0;
-            scroll-behavior: smooth; /* Smooth scrolling */
+            font-family: 'Arial', sans-serif;
+            background-color: #000; /* Black background */
+            color: #fff; /* White text */
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        html {
+            scroll-padding-top: 60px; /* Adjust this value to match the height of your fixed navbar */
+        }
+
+        section {
+            padding: 100px 50px;
+            min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow-x: hidden; /* Prevent horizontal scroll */
-        }
-        .header, .footer {
-            width: 100%;
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            padding: 1rem;
-        }
-        .header {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        .logo {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            overflow: hidden;
-            margin: 0 auto;
-            transition: transform 0.3s ease;
-        }
-        .logo img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        .logo:hover {
-            transform: scale(1.1); /* Zoom in effect */
-        }
-        .nav {
-            margin: 1rem 0;
-        }
-        .nav a {
-            position: relative;
-            color: #fff;
-            text-decoration: none;
-            margin: 0 1rem;
-            font-weight: bold;
-            overflow: hidden; /* Ensure underline stays within the button */
-        }
-        .nav a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background-color: #fff;
-            transition: width 0.3s ease, left 0.3s ease;
-        }
-        .nav a:hover::after {
-            width: 100%;
-            left: 0;
-        }
-        .section {
-            width: 80%;
-            max-width: 1200px;
-            margin: 2rem auto;
-            text-align: center;
-        }
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
             justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
-        .gallery img {
-            width: 100%;
+
+        section.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            text-align: center;
+        }
+
+        .about-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .about-text {
+            flex: 1;
+            max-width: 50%;
+            text-align: left;
+        }
+
+        .about-image {
+            flex: 1;
+            max-width: 40%;
             height: auto;
-            object-fit: contain;
             border-radius: 10px;
-            transition: transform 0.3s ease;
-            cursor: pointer; /* Indicate clickable */
-        }
-        .gallery img:hover {
-            transform: scale(1.05); /* Slight zoom effect on hover */
-        }
-        .button {
-            background-color: #6f4e37; /* Chocolate color */
-            color: #fff;
-            padding: 0.5rem 1rem;
-            text-decoration: none;
-            border-radius: 5px;
-            margin: 0.5rem;
-            display: inline-block;
-            position: relative;
             overflow: hidden;
         }
-        .button:hover {
-            background-color: #4e3d2f; /* Darker chocolate */
-        }
-        .button::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background-color: #fff;
-            transition: width 0.3s ease, left 0.3s ease;
-        }
-        .button:hover::after {
+
+        .about-image img {
             width: 100%;
-            left: 0;
+            height: auto;
+            object-fit: cover;
+            display: block; /* Ensure no unwanted spacing */
         }
-        .footer {
-            position: relative;
-            bottom: 0;
-        }
-        /* Lightbox styles */
-        .lightbox {
-            display: none;
+
+        /* Navigation bar */
+        nav {
             position: fixed;
             top: 0;
-            left: 0;
             width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 1001;
-        }
-        .lightbox img {
-            max-width: 80%;
-            max-height: 80%;
-            border-radius: 10px;
-            display: block;
-            margin: 0 auto;
-        }
-        /* Social icons styles */
-        .social-icons {
-            margin: 1rem 0;
-        }
-        .social-icons a {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #333;
-            color: #fff;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 10px 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
             text-align: center;
-            line-height: 40px;
-            margin: 0 0.5rem;
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            transition: all 0.3s ease; /* Smooth transitions */
         }
-        .social-icons a:hover {
-            background-color: #6f4e37; /* Chocolate color */
-            transform: scale(1.1); /* Zoom effect */
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: inline-flex;
         }
-        .social-icons .fa {
-            font-size: 20px;
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff; /* White text for navigation */
+            font-weight: bold;
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Navigation hover underline effect */
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: #00FF00; /* Green underline */
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        /* About Me Button Hover underline effect */
+        .btn, .btn-outline {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 1rem;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            color: #fff; /* White text for buttons */
+            background-color: transparent;
+            border: 2px solid #00FF00;
+        }
+
+        .btn:hover, .btn-outline:hover {
+            transform: translateY(-3px);
+            background-color: #00FF00; /* Green background on hover */
+            color: #000; /* Black text on hover */
+        }
+
+        /* Hover line effect */
+        .btn::after, .btn-outline::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: #fff; /* White hover line for About Me */
+            transition: width 0.4s ease, left 0.4s ease;
+        }
+
+        .btn:hover::after, .btn-outline:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        /* Smooth scrolling animations */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        section.active {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        /* Email link styling */
+        .email-link {
+            color: #00FF00; /* Green color for email link */
+            text-decoration: none;
+        }
+
+        .email-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            text-align: center;
+            color: #fff;
+            position: center;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Social Media Icons */
+        .social-icons, .my-work-icons {
+            margin-top: 20px;
+        }
+
+        .social-icons a, .my-work-icons a {
+            margin: 0 15px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 2rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-icons a:hover, .my-work-icons a:hover {
+            color: #00FF00; /* Green color on hover */
+            transform: scale(1.1); /* Slight zoom effect */
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- FontAwesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <div class="header">
-        <div class="logo">
-            <img src="https://i.ibb.co.com/T2xDs0N/500x500-px-2-0-removebg-preview.png" alt="Pixel Hub Logo" loading="lazy">
+
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#portfolio">Portfolio</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- About Me Section -->
+    <section id="about" class="container">
+        <div class="about-content">
+            <div class="about-text">
+                <h1>About Me</h1>
+                <p>Hello, I'm Muntasim, a 19-year-old aspiring entrepreneur with a passion for learning new skills and watching anime. I am the founder of Ascendancy, a thriving Discord community, and currently, I'm focused on mastering DropShipping while working on my Notion OS. With 3 years of experience as a Notion expert, I'm also building a YouTube channel where I will create tutorials to help others build their own Notion OS and explore the full potential of Notion.</p>
+                <a href="#portfolio" class="btn">View My Work</a>
+                <a href="#contact" class="btn-outline">Get In Touch</a>
+            </div>
+            <div class="about-image">
+                <img src="https://i.ibb.co.com/FbRKx6f/IMG-20240302-092105-01.jpg" alt="Muntasim's Photo" loading="lazy">
+            </div>
         </div>
-        <div class="nav">
-            <a href="#home" class="button">Home</a>
-            <a href="#gallery" class="button">Gallery</a>
-            <a href="#about" class="button">About</a>
-            <a href="#contact" class="button">Contact</a>
+    </section>
+
+    <!-- Portfolio Section -->
+<section id="portfolio" class="container">
+    <div>
+        <h1>My Work</h1>
+        <p>Explore my projects and the work I've done as a Notion expert, and discover how I can help you organize your life or business with custom Notion setups.</p>
+        <div class="my-work-icons">
+            <a href="https://gumroad.com/your-gumroad-link" target="_blank" aria-label="Gumroad"><i class="fab fa-gumroad"></i></a>
+            <!-- Add other project links or icons as needed -->
         </div>
+        <a href="https://muntasimnotion.gumroad.com/" target="_blank" class="btn">Projects</a>
     </div>
-    
-    <div id="home" class="section">
-        <h1>Welcome to Pixel Hub</h1>
-        <p>Showcasing Unique Sketch Art</p>
-        <a href="https://www.facebook.com/profile.php?id=61565219648345" class="button">Hire Me</a>
-    </div>
-    
-    <div id="gallery" class="section">
-        <h2>Gallery</h2>
-        <div class="gallery">
-            <a href="#lightbox1">
-                <img src="https://i.ibb.co.com/xH9NgcM/1.jpg" alt="Sketch Art 1" loading="lazy">
-            </a>
-            <a href="#lightbox2">
-                <img src="https://i.ibb.co.com/qDjvbLb/2.jpg" alt="Sketch Art 2" loading="lazy">
-            </a>
-            <a href="#lightbox3">
-                <img src="https://i.ibb.co.com/RhzKGCJ/3.jpg" alt="Sketch Art 3" loading="lazy">
-            </a>
-            <a href="#lightbox4">
-                <img src="https://i.ibb.co.com/brT5WpM/4.jpg" alt="Sketch Art 4" loading="lazy">
-            </a>
-            <a href="#lightbox5">
-                <img src="https://i.ibb.co.com/gJhLrFb/5.jpg" alt="Sketch Art 5" loading="lazy">
-            </a>
-            <!-- Additional images for the second row -->
-            <a href="#lightbox6">
-                <img src="https://i.ibb.co.com/zxDYkfW/6.jpg" alt="Sketch Art 6" loading="lazy">
-            </a>
-            <a href="#lightbox7">
-                <img src="https://i.ibb.co.com/KG1Fxft/7.jpg" alt="Sketch Art 7" loading="lazy">
-            </a>
-            <a href="#lightbox8">
-                <img src="https://i.ibb.co.com/5xdmjk2/8.jpg" alt="Sketch Art 8" loading="lazy">
-            </a>
-            <a href="#lightbox9">
-                <img src="https://i.ibb.co.com/dprStJc/9.jpg" alt="Sketch Art 9" loading="lazy">
-            </a>
-            <a href="#lightbox10">
-                <img src="https://i.ibb.co.com/fvv39Sw/10.jpg" alt="Sketch Art 10" loading="lazy">
-            </a>
-            <a href="#lightbox11">
-                <img src="https://i.ibb.co.com/LrWF46W/11.jpg" alt="Sketch Art 11" loading="lazy">
-            </a>
-            <a href="#lightbox12">
-                <img src="https://i.ibb.co.com/pX2pD44/12.jpg" alt="Sketch Art 12" loading="lazy">
-            </a>
+</section>
+    <!-- Contact Section -->
+    <section id="contact" class="container">
+        <div>
+            <h1>Contact Me</h1>
+            <p>I'd love to hear from you! Whether you have a question, a project, or just want to connect, feel free to reach out.</p>
+            <a href="mailto:muntasim018@gmail.com" class="btn">Email Me</a>
+            <div class="social-icons">
+                <a href="https://facebook.com/muntasim.billah.96" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="https://instagram.com/muntasim_billah" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://discord.com/invite/uSStHepegr" target="_blank" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                <a href="https://twitter.com/yourprofile" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="https://youtube.com/@muntasimnotion" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                <a href="https://linkedin.com/in/yourprofile" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://reddit.com/user/yourprofile" target="_blank" aria-label="Reddit"><i class="fab fa-reddit"></i></a>
+            </div>
         </div>
-    </div>
-    
-    <!-- Lightbox containers -->
-    <div id="lightbox1" class="lightbox">
-        <a href="#gallery">
-            <img src="https://i.ibb.co.com/xH9NgcM/1.jpg" alt="Sketch Art 1" loading="lazy">
-        </a>
-    </div>
-    <div id="lightbox2" class="lightbox">
-        <a href="#gallery">
-            <img src="https://i.ibb.co.com/qDjvbLb/2.jpg" alt="Sketch Art 2" loading="lazy">
-        </a>
-    </div>
-    <div id="lightbox3" class="lightbox">
-        <a href="#gallery">
-            <img src="https://i.ibb.co.com/RhzKGCJ/3.jpg" alt="Sketch Art 3" loading="lazy">
-        </a>
-    </div>
-    <div id="lightbox4" class="lightbox">
-        <a href="#gallery">
-            <img src="https://i.ibb.co.com/brT5WpM/4.jpg" alt="Sketch Art 4" loading="lazy">
-        </a>
-    </div>
-    <div id="lightbox5" class="lightbox">
-        <a href="#gallery">
-            <img src="https://i.ibb.co.com/gJhLrFb/5.jpg" alt="Sketch Art 5" loading="lazy">
-        </a>
-    </div>
-    <div id="lightbox6" class="lightbox">
-        <a href="#gallery">
-            <img src="https://i.ibb.co.com/zxDYkfW/6.jpg" alt="Sketch Art 6" loading="lazy">
-        </a>
-    </div>
-    <div id="lightbox7" class="lightbox">
-        <a href="#gallery">
-            <img src="https://i.ibb.co.com/KG1Fxft/7.jpg" alt="Sketch Art 7" loading="lazy">
-        </a>
-    </div>
-    <div id="lightbox8" class="lightbox">
-        <a href="#gallery">
-            <img src="https://i.ibb.co.com/5xdmjk2/8.jpg" alt="Sketch Art 8" loading="lazy">
-        </a>
-    </div>
-    <div id="lightbox9" class="lightbox">
-        <a href="#gallery">
-            <img src="https://i.ibb.co.com/dprStJc/9.jpg" alt="Sketch Art 9" loading="lazy">
-        </a>
-    </div>
-    <div id="lightbox10" class="lightbox">
-        <a href="#gallery">
-            <img src="https://i.ibb.co.com/fvv39Sw/10.jpg" alt="Sketch Art 10" loading="lazy">
-        </a>
-    </div>
-    <div id="lightbox11" class="lightbox">
-        <a href="#gallery">
-            <img src="https://i.ibb.co.com/LrWF46W/11.jpg" alt="Sketch Art 11" loading="lazy">
-        </a>
-    </div>
-    <div id="lightbox12" class="lightbox">
-        <a href="#gallery">
-            <img src="https://i.ibb.co.com/pX2pD44/12.jpg" alt="Sketch Art 12" loading="lazy">
-        </a>
-    </div>
-    
-    <div id="about" class="section">
-        <h2>About</h2>
-        <p>Pixel Hub is a portfolio that showcases unique sketch art created with passion and precision.</p>
-    </div>
-    
-    <div id="contact" class="section">
-    <h2>Contact</h2>
-    <p>If you want to collaborate or have any inquiries, feel free to reach out.</p>
-    <div class="social-icons">
-        <a href="https://www.facebook.com/profile.php?id=61565219648345" class="fab fa-facebook-f"></a>
-        <a href="https://twitter.com/username" class="fab fa-twitter"></a>
-        <a href="https://www.instagram.com/username" class="fab fa-instagram"></a>
-    </div>
-</div>
-    
-    <div class="footer">
-        <p>&copy; 2024 Pixel Hub. All rights reserved.</p>
-    </div>
-    
-<script>
-    document.querySelectorAll('.nav a').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href').substring(1); // Remove the #
-        const targetElement = document.getElementById(targetId);
-        const headerHeight = document.querySelector('.header').offsetHeight; // Get header height
+    </section>
 
-        window.scrollTo({
-            top: targetElement.offsetTop - headerHeight, // Adjust scroll to account for header
-            behavior: 'smooth'
+    <!-- Footer -->
+    <footer>
+        <p>All rights reserved &copy; 2024 Muntasim. Designed by Me.</p>
+    </footer>
+
+    <script>
+        // Intersection Observer for smooth section transitions
+        const sections = document.querySelectorAll('section');
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                } else {
+                    entry.target.classList.remove('active');
+                }
+            });
+        }, {
+            threshold: 0.1
         });
-    });
-});
 
-
-    // Lightbox functionality with no page scroll
-    document.querySelectorAll('.gallery a').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            const lightboxId = this.getAttribute('href').substring(1);
-            const lightbox = document.getElementById(lightboxId);
-            lightbox.style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // Prevent page scroll
+        sections.forEach(section => {
+            observer.observe(section);
         });
-    });
 
-    document.querySelectorAll('.lightbox').forEach(lightbox => {
-        lightbox.addEventListener('click', function() {
-            this.style.display = 'none';
-            document.body.style.overflow = ''; // Restore page scroll
+        // Smooth scrolling for navbar links
+        const navLinks = document.querySelectorAll('nav ul li a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const targetId = e.target.getAttribute('href');
+                document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+            });
         });
-    });
-</script>
+    </script>
 
 </body>
 </html>
-
